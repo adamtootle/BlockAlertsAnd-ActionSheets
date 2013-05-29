@@ -14,6 +14,7 @@
     NSString *_message;
     BOOL _shown;
     BOOL _cancelBounce;
+    BOOL _fromBottom;
 }
 
 + (BlockAlertView *)alertWithTitle:(NSString *)title message:(NSString *)message;
@@ -29,7 +30,10 @@
 
 - (void)addComponents:(CGRect)frame;
 
-- (void)show;
+- (void)show:(BOOL)fromBottom;
+- (void)showFromBottom;
+- (void)showFromTop;
+
 - (void)dismissWithClickedButtonIndex:(NSInteger)buttonIndex animated:(BOOL)animated;
 
 - (void)setupDisplay;

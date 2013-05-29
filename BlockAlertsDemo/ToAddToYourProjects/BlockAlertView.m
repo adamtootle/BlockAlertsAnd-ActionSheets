@@ -205,8 +205,17 @@ static UIFont *buttonFont = nil;
     [self addButtonWithTitle:title color:@"red" block:block];
 }
 
-- (void)show
+- (void)show:(BOOL)fromBottom
 {
+    if(fromBottom)
+    {
+        _fromBottom = YES;
+    }
+    else
+    {
+        _fromBottom = NO;
+    }
+    
     _shown = YES;
     
     BOOL isSecondButton = NO;
@@ -329,6 +338,10 @@ static UIFont *buttonFont = nil;
     
     CGRect frame = _view.frame;
     frame.origin.y = - _height;
+    if(_fromBottom)
+    {
+        frame.origin.y = [UIScreen mainScreen].bounds.size.height + (_view.frame.origin.y * -1);
+    }
     frame.size.height = _height;
     _view.frame = frame;
     
@@ -355,7 +368,14 @@ static UIFont *buttonFont = nil;
     [[BlockBackground sharedInstance] addToMainWindow:_view];
 
     __block CGPoint center = _view.center;
-    center.y = floorf([BlockBackground sharedInstance].bounds.size.height * 0.5) + kAlertViewBounce;
+    if(_fromBottom)
+    {
+        center.y = floorf([BlockBackground sharedInstance].bounds.size.height * 0.5) - kAlertViewBounce;
+    }
+    else
+    {
+        center.y = floorf([BlockBackground sharedInstance].bounds.size.height * 0.5) + kAlertViewBounce;
+    }
     
     _cancelBounce = NO;
     
@@ -373,7 +393,14 @@ static UIFont *buttonFont = nil;
                                                delay:0.0
                                              options:0
                                           animations:^{
-                                              center.y -= kAlertViewBounce;
+                                              if(_fromBottom)
+                                              {
+                                                  center.y += kAlertViewBounce;
+                                              }
+                                              else
+                                              {
+                                                  center.y -= kAlertViewBounce;
+                                              }
                                               _view.center = center;
                                           } 
                                           completion:^(BOOL finished) {
@@ -382,6 +409,16 @@ static UIFont *buttonFont = nil;
                      }];
     
     [self retain];
+}
+
+- (void)showFromBottom
+{
+    [self show:YES];
+}
+
+- (void)showFromTop
+{
+    [self show:NO];
 }
 
 - (void)dismissWithClickedButtonIndex:(NSInteger)buttonIndex animated:(BOOL)animated 
@@ -406,7 +443,14 @@ static UIFont *buttonFont = nil;
                             options:0
                          animations:^{
                              CGPoint center = _view.center;
-                             center.y += 20;
+                             if(_fromBottom)
+                             {
+                                 center.y -= 20;
+                             }
+                             else
+                             {
+                                 center.y += 20;
+                             }
                              _view.center = center;
                          } 
                          completion:^(BOOL finished) {
@@ -415,7 +459,14 @@ static UIFont *buttonFont = nil;
                                                  options:UIViewAnimationOptionCurveEaseIn
                                               animations:^{
                                                   CGRect frame = _view.frame;
-                                                  frame.origin.y = -frame.size.height;
+                                                  if(_fromBottom)
+                                                  {
+                                                      frame.origin.y = +frame.size.height;
+                                                  }
+                                                  else
+                                                  {
+                                                      frame.origin.y = -frame.size.height;
+                                                  }
                                                   _view.frame = frame;
                                                   [[BlockBackground sharedInstance] reduceAlphaIfEmpty];
                                               } 
