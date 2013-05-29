@@ -108,7 +108,7 @@
                                                  name:UIKeyboardWillShowNotification
                                                object:nil];
     
-    [super show];
+    [super show:NO];
     
     [[NSNotificationCenter defaultCenter] addObserver:textField selector:@selector(becomeFirstResponder) name:@"AlertViewFinishedAnimations" object:self];
 }

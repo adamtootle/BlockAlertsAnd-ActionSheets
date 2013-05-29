@@ -136,7 +136,7 @@
         self.tableView.editing = YES;
     }
 
-    [super show];
+    [super showFromTop];
 }
 
 #pragma mark - iOS 4 Compatibility
