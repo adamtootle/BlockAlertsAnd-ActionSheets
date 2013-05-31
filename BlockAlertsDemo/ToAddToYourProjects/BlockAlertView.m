@@ -418,7 +418,7 @@ static UIFont *buttonFont = nil;
 
 - (void)showFromTop
 {
-    [self showFromTop];
+    [self show:NO];
 }
 
 - (void)dismissWithClickedButtonIndex:(NSInteger)buttonIndex animated:(BOOL)animated 
